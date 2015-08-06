@@ -226,7 +226,9 @@ var Simulation = {
 
     this.player = new Player;
     this.player.lookAt(this.wormholePositionSize);
-
+    this.player.makePath([new THREE.Vector3(0, 0.0, 0),new THREE.Vector3(-20, 0.0, -20),new THREE.Vector3(0, 0.0, -32),new THREE.Vector3(0, 0.0, -62)],200)
+    //visualize path
+    //this.quadScene.add(this.player.pathLine);
     // Add keyboard controls to the player
     this.keyboardControls = new KeyboardControls(this.player, this.container);
     this.keyboardControls.movementSpeed = 1;
@@ -246,6 +248,7 @@ var Simulation = {
     var keypress = function(event) {
       if (event.charCode == 32)
       {
+        return;//disable controls
         if (!self.keyboardControls.dragToLook)
         {
           self.keyboardControls.moveState.yawLeft = 0;

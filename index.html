@@ -210,9 +210,6 @@ const float r2 = 0.0625;
 const float PI = 3.14159265359;
 const float TWOPI = 6.28318530718;
 
-float gravityWormhole = wormhole.w * lightSpeed * lightSpeed;
-float gravityBlackhole = blackhole.w * lightSpeed * lightSpeed;
-
 vec3 saturnColor(vec3 pos)
 {
   vec2 uv = vec2(
@@ -332,6 +329,10 @@ void testDistance(int i, float distance, inout float currentDistance, inout int 
 
 vec3 raytrace(vec3 rayPosition, vec3 rayDirection)
 {
+  
+float gravityWormhole = wormhole.w * lightSpeed * lightSpeed;
+float gravityBlackhole = blackhole.w * lightSpeed * lightSpeed;
+
   float currentDistance = INFINITY;
   int   currentObject = -1, prevObject = -1;
   float currentGalaxy = float(startGalaxy);

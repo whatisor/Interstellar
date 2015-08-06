@@ -12,7 +12,6 @@ function Player()
 
   this.controls = [];
 }
-
 Player.prototype = {
 
   lookAt: function(position)
@@ -42,6 +41,7 @@ Player.prototype = {
         ray            = new THREE.Ray();
 
     return function(delta) {
+
       var wormholePosition = Simulation.wormholePositionSize,
           wormholeSize = Simulation.wormholePositionSize.w,
           wormholeGravityRatio = Simulation.wormholeGravityRatio,
@@ -96,7 +96,18 @@ Player.prototype = {
       }
 
       rotation.set( this.eyeAngularVelocity.x * delta, this.eyeAngularVelocity.y * delta, this.eyeAngularVelocity.z * delta, 1 ).normalize();
-      this.eyes.quaternion.multiply( rotation );
+     
+      //if exist path, run along path
+      if(this.path){
+        if(this.timer >= this.path.length-1)this.timer = 0;
+        var point = this.path[this.timer++];
+        this.eyes.position.copy(point);
+        this.eyes.lookAt(this.path[this.timer]);
+
+      }
+      else {
+         this.eyes.quaternion.multiply( rotation );
+      }
     };
   })(),
 
@@ -107,5 +118,44 @@ Player.prototype = {
 
     // Object isn't actually part of a rendered scene, so we need to call this manually
     this.object.updateMatrixWorld(true);
+  },
+  //make path
+  makePath: function(points,desiredNumber){
+    var spline = new THREE.Spline( points );
+    var path = [];
+    for ( i = 0; i < points.length * desiredNumber; i ++ ) {
+
+          index = i / ( points.length * desiredNumber );
+          var position = spline.getPoint( index );
+          path.push(new THREE.Vector3( position.x, position.y, position.z ));
+        }
+    //this.pathLine = this.makeLineMesh(path,0xff0000);
+    this.path = path;
+    this.timer = 0;
+  },
+  ///for visualine
+  makeLineMesh:function(lines,colorin){
+  var len = lines.length;
+  var geometry = new THREE.BufferGeometry();
+  var vertices = new Float32Array(len*3);
+  var colors = new Float32Array(len*3);
+  var color = new THREE.Color();
+  color.setHex(colorin);
+  for(var i = 0; i < len*3; i+=3){
+    vertices[i] = lines[i/3].x;
+    vertices[i+1] = lines[i/3].y;
+    vertices[i+2] = lines[i/3].z;
+    colors[i] =color.r;
+    colors[i+1] =color.g;
+    colors[i+2] =color.b;
   }
+  geometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+  geometry.addAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) );
+  return new THREE.Line( geometry, new THREE.LineBasicMaterial( 
+      {   color: 0xffffff, opacity: 1.0, blending: 
+      THREE.AdditiveBlending, transparent:true, 
+      depthWrite: false, vertexColors: true, 
+      linewidth: 1 } ) 
+  );
+}
 };
