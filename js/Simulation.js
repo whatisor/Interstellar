@@ -43,6 +43,8 @@ var Simulation = {
     });
 
     this.rayMatrix = new THREE.Matrix4();
+
+
   },
 
   initDom: function()
@@ -226,7 +228,7 @@ var Simulation = {
 
     this.player = new Player;
     this.player.lookAt(this.wormholePositionSize);
-    this.player.makePath([new THREE.Vector3(0, 0.0, 0),new THREE.Vector3(-20, 0.0, -20),new THREE.Vector3(0, 0.0, -32),new THREE.Vector3(0, 0.0, -62)],200)
+    //this.player.makePath([new THREE.Vector3(0, 0.0, 0),new THREE.Vector3(-20, 0.0, -20),new THREE.Vector3(0, 0.0, -32),new THREE.Vector3(0, 0.0, -62)],200)
     //visualize path
     //this.quadScene.add(this.player.pathLine);
     // Add keyboard controls to the player
@@ -289,7 +291,6 @@ var Simulation = {
       this.update();
     }
     this.render();
-
     this.stats.update();
   },
 

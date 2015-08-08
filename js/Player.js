@@ -1,8 +1,13 @@
+//Debug tool
+var EYES;
+var KEYS = [];
+var QUADS = [];
 function Player()
 {
   this.object = new THREE.Object3D;
   this.eyes = new THREE.OrthographicCamera(-1, 1, -1, 1, 0, 1);
-
+ 
+  EYES = this.eyes;
   this.velocity = new THREE.Vector3(0, 0, 0);
   this.eyeAngularVelocity = new THREE.Vector3;
 

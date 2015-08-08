@@ -136,14 +136,12 @@
 <div id="info">
   <h3>Controls:</h3>
   <div id="keyboard-controls">
-    <kbd>WASD</kbd> move,
-    <kbd>R|F</kbd> up | down,
-    <kbd>Q|E</kbd> roll,
-    <kbd>up|down</kbd> pitch,
-    <kbd>left|right</kbd> yaw
-    <kbd>shift</kbd> speed up<br>
-    <kbd>space</kbd> toggle drag controls<br>
-    Scroll to increase/decrease your field of view.
+    <kbd>AD WS EF</kbd> move X/Y/Z,
+    Left mouse drag to rotate (short rotate)
+    </br>
+    <kbd>SPACE</kbd> to record current position and orientation
+    </br>When reach to final target,
+    <kbd>ENTER</kbd> to write all into console 
   </div>
   <div id="mobile-device-controls">
     Point your device around you to look around. Touch the screen to move forwards. Use two fingers to go faster.
@@ -530,6 +528,7 @@ void main() {
 <script src="js/controls/DeviceOrientationControls.js"></script>
 <script src="js/controls/KeyboardControls.js"></script>
 <script src="js/controls/MobileDeviceControls.js"></script>
+<script src="js/controls/TrackballControls.js"></script>
 
 <script src="js/Detector.js"></script>
 <script src="js/stats.min.js"></script>
