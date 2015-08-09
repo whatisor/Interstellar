@@ -7,12 +7,12 @@ function Player()
   this.object = new THREE.Object3D;
   this.eyes = new THREE.OrthographicCamera(-1, 1, -1, 1, 0, 1);
  
-  EYES = this.eyes;
+ // EYES = this.eyes;
   this.velocity = new THREE.Vector3(0, 0, 0);
   this.eyeAngularVelocity = new THREE.Vector3;
 
   this.object.add(this.eyes);
-
+  EYES = this.object;
   this.galaxy = 0;
 
   this.controls = [];
@@ -108,7 +108,7 @@ Player.prototype = {
         var point = this.path[this.timer++];
         this.eyes.position.copy(point);
         this.eyes.lookAt(this.path[this.timer]);
-
+        //this.eyes.quaternion.copy(this.pathOri[Math.floor(this.timer/this.pathOri.length*this.steps)]);
       }
       else {
          this.eyes.quaternion.multiply( rotation );
@@ -125,7 +125,7 @@ Player.prototype = {
     this.object.updateMatrixWorld(true);
   },
   //make path
-  makePath: function(points,desiredNumber){
+  makePath: function(points,orientations,desiredNumber){
     var spline = new THREE.Spline( points );
     var path = [];
     for ( i = 0; i < points.length * desiredNumber; i ++ ) {
@@ -136,6 +136,8 @@ Player.prototype = {
         }
     //this.pathLine = this.makeLineMesh(path,0xff0000);
     this.path = path;
+    this.pathOri = orientations;
+    this.steps = points.length;
     this.timer = 0;
   },
   ///for visualine

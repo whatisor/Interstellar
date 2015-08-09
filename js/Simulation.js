@@ -221,14 +221,13 @@ var Simulation = {
     THREE.BloomPass.blurX.set( 1 / (512 * vx), 0.0 );
     THREE.BloomPass.blurY.set( 0.0, 1 / (512 * vy) );
   },
-
   initPlayer: function()
   {
     var self = this;
 
     this.player = new Player;
     this.player.lookAt(this.wormholePositionSize);
-    //this.player.makePath([new THREE.Vector3(0, 0.0, 0),new THREE.Vector3(-20, 0.0, -20),new THREE.Vector3(0, 0.0, -32),new THREE.Vector3(0, 0.0, -62)],200)
+    //this.player.makePath(pos,qua,20);
     //visualize path
     //this.quadScene.add(this.player.pathLine);
     // Add keyboard controls to the player
@@ -250,7 +249,6 @@ var Simulation = {
     var keypress = function(event) {
       if (event.charCode == 32)
       {
-        return;//disable controls
         if (!self.keyboardControls.dragToLook)
         {
           self.keyboardControls.moveState.yawLeft = 0;

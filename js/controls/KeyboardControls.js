@@ -38,7 +38,8 @@ function KeyboardControls(player, element)
 
   function keydown(event)
   {
-    if (event.keyCode === 32)//record positions
+
+    if (event.keyCode === 66)//B:record positions
     {
       console.log("["+EYES.position.x +", "+EYES.position.y +", "+EYES.position.z+"],");
       console.log("["+EYES.quaternion.w+","+EYES.quaternion.x +", "+EYES.quaternion.y +", "+EYES.quaternion.z+"],");
@@ -68,36 +69,39 @@ function KeyboardControls(player, element)
       console.log(str);
       return;
     }
-    var step = .1;
-    var off = new THREE.Vector3(0,0,0);
-    switch (String.fromCharCode(event.keyCode))
+    if (event.altKey)
+    {
+      return;
+    }
+
+    switch (event.keyCode)
     {
       case 16: // Shift
         self.movementSpeedMultiplier = 10;
         break;
 
-      case "D": // W
-        off.x += step;
+      case 87: // W
+        self.moveState.forward = 1;
         break;
 
-      case "A": // S
-        off.x -= step;
+      case 83: // S
+        self.moveState.back = 1;
         break;
 
-      case "W": // W
-        off.y += step;
+      case 65: // A
+        self.moveState.left = 1;
         break;
 
-      case "S": // S
-        off.y -= step;
+      case 68: // D
+        self.moveState.right = 1;
         break;
 
-      case "F": // W
-        off.z += step;
+      case 82: // R
+        self.moveState.up = 1;
         break;
 
-      case "E": // S
-        off.z -= step;
+      case 70: // F
+        self.moveState.down = 1;
         break;
 
       case 38: // Up
@@ -124,14 +128,14 @@ function KeyboardControls(player, element)
         self.moveState.rollRight = 1;
         break;
     }
-    off.applyQuaternion(EYES.quaternion);
-    EYES.position.add(off);
+
     updateMovementVector();
     updateRotationVector();
   };
 
   function keyup(event)
   {
+
     switch (event.keyCode)
     {
       case 16: // Shift
@@ -190,15 +194,9 @@ function KeyboardControls(player, element)
     updateMovementVector();
     updateRotationVector();
   }
-var startX = 0;
-var startY =0;
-var dragging = false;
+
   function mousedown(event)
   {
-    startX = event.offsetX;
-    startY = event.offsetY;
-    dragging = true;
-    return
     if ( element !== document )
     {
       element.focus();
@@ -230,12 +228,6 @@ var dragging = false;
 
   function mousemove(event)
   {
-    //EYES.quaternion.set(1,0,0,0);
-    if(dragging){
-    EYES.quaternion.multiply( new THREE.Quaternion().setFromAxisAngle( new THREE.Vector3( 0, 1, 0 ), Math.PI/10*(event.offsetX-startX)/(window.innerWidth/2) ) );
-    EYES.quaternion.multiply( new THREE.Quaternion().setFromAxisAngle( new THREE.Vector3( 1, 0, 0 ), Math.PI/10*(event.offsetY-startY)/(window.innerHeight/2) ) );
-    }
-    return;
     if (self.dragToLook && self.mouseStatus == 0)
     {
       return;
@@ -253,8 +245,6 @@ var dragging = false;
 
   function mouseup(event)
   {
-    dragging = false;
-    return;
     event.preventDefault();
     event.stopPropagation();
 
@@ -352,7 +342,6 @@ var dragging = false;
 
   this.update = function()
   {
-    //return;
     var moveMult = this.movementSpeed * this.movementSpeedMultiplier;
     var rotMult = this.rollSpeed;
 
