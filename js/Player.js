@@ -97,6 +97,14 @@ Player.prototype = {
           this.object.position.copy(wormholePosition).add(temp.subVectors(wormholePosition, intersection).multiplyScalar(1.0001));
 
           this.galaxy = 1 - this.galaxy;
+          console.log("GALAXY "+this.galaxy);
+          console.log(KEYS.length);
+          changeGalaxy = KEYS.length;
+           console.log("["+EYES.position.x +", "+EYES.position.y +", "+EYES.position.z+"],");
+          console.log("["+EYES.quaternion.w+","+EYES.quaternion.x +", "+EYES.quaternion.y +", "+EYES.quaternion.z+"],");
+          KEYS.push([EYES.position.x,EYES.position.y,EYES.position.z]);
+          QUADS.push([EYES.quaternion.w,EYES.quaternion.x,EYES.quaternion.y,EYES.quaternion.z]);
+
         }
       }
 
@@ -109,6 +117,10 @@ Player.prototype = {
         this.eyes.position.copy(point);
         this.eyes.lookAt(this.path[this.timer]);
         //this.eyes.quaternion.copy(this.pathOri[Math.floor(this.timer/this.pathOri.length*this.steps)]);
+        console.log(this.eyes.position.distanceTo(positions[changeGalaxy]));
+        if(this.eyes.position.distanceTo(positions[changeGalaxy])<1 && this.galaxy===0){
+          this.galaxy = 1 - this.galaxy;
+        }
       }
       else {
          this.eyes.quaternion.multiply( rotation );
@@ -126,10 +138,12 @@ Player.prototype = {
   },
   //make path
   makePath: function(points,orientations,desiredNumber){
+    desiredNumber = this.smooth;
     var spline = new THREE.Spline( points );
     var path = [];
-    for ( i = 0; i < points.length * desiredNumber; i ++ ) {
 
+    for ( i = 0; i < points.length * desiredNumber; i ++ ) {
+          
           index = i / ( points.length * desiredNumber );
           var position = spline.getPoint( index );
           path.push(new THREE.Vector3( position.x, position.y, position.z ));
