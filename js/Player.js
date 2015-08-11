@@ -23,6 +23,9 @@ function Player()
    this.path = [];
     this.pathOri = [];
     this.eyesOri =[];
+    lastPos = new THREE.Vector3();
+    lastPosQua = new THREE.Quaternion();
+    lastOri= new THREE.Quaternion();
 }
 Player.prototype = {
 
@@ -61,6 +64,12 @@ Player.prototype = {
 
       if (this.velocity.lengthSq() > 0.00001)
       {
+
+        //store last before change galaxy
+        lastPos.copy(this.object.position);
+        lastPosQua.copy(this.object.quaternion);
+        lastOri.copy(this.eyes.quaternion);
+
         prevPosition.copy(this.object.position);
 
         // 1. Compute wormhole curvature/gravity.
@@ -104,9 +113,20 @@ Player.prototype = {
           this.object.position.copy(wormholePosition).add(temp.subVectors(wormholePosition, intersection).multiplyScalar(1.0001));
 
           this.galaxy = 1 - this.galaxy;
-          console.log("GALAXY "+this.galaxy);
-          console.log(KEYS.length);
+          
+
+
+          //last one
+          KEYS.push([lastPos.x,lastPos.y,lastPos.z]);
+           KEYSQUA.push([lastPosQua.x,lastPosQua.y,lastPosQua.z,lastPosQua.w]);        
+          QUADS.push([lastOri.x,lastOri.y,lastOri.z,lastOri.w]);
+
+
+
+           console.log("GALAXY "+this.galaxy);
+          console.log("GALAXY CHANGED AT "+KEYS.length);
           changeGalaxy = KEYS.length;
+           //new one
            console.log("["+OBJ.position.x +", "+OBJ.position.y +", "+OBJ.position.z+"],");
           console.log("["+EYES.quaternion.x+","+EYES.quaternion.y +", "+EYES.quaternion.z +", "+EYES.quaternion.w+"],");
           KEYS.push([OBJ.position.x,OBJ.position.y,OBJ.position.z]);
@@ -118,7 +138,7 @@ Player.prototype = {
       rotation.set( this.eyeAngularVelocity.x * delta, this.eyeAngularVelocity.y * delta, this.eyeAngularVelocity.z * delta, 1 ).normalize();
      
       //if exist path, run along path
-      if(this.path){
+      if(this.path.length){
         if(this.timer >= this.path.length-1){
           this.galaxy=0;
           this.timer = 0;

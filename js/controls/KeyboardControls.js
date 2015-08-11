@@ -59,26 +59,31 @@ function KeyboardControls(player, element)
       //write all
       console.log("write all:");
       console.log("Pos:");
-      var str="";
+      var str="[";
       KEYS.forEach(function(key){
-        str +="["+key[0]+", "+key[1]+", "+key[2]+"],";
+        str +="["+key[0]+", "+key[1]+", "+key[2]+"],"+"\n";
       })
-      console.log(str);
+      str = str.substring(0, str.length - 2);
+      console.log(str+"]");
       //posqua
-      console.log("Quad:");
-      str="";
+      console.log("PosQua:");
+      str="[";
       KEYSQUA.forEach(function(key){
-        str +="["+key[0]+", "+key[1]+", "+key[2]+", "+key[3]+"],";
+        str +="["+key[0]+", "+key[1]+", "+key[2]+", "+key[3]+"],"+"\n";
       })
-      console.log(str);
+      str = str.substring(0, str.length - 2);
+      console.log(str+"]");
       //quad
 
-      console.log("Quad:");
-      str="";
+      console.log("Qua:");
+      str="[";
       QUADS.forEach(function(key){
-        str +="["+key[0]+", "+key[1]+", "+key[2]+", "+key[3]+"],";
+        str +="["+key[0]+", "+key[1]+", "+key[2]+", "+key[3]+"],"+"\n";
       })
-      console.log(str);
+      str = str.substring(0, str.length - 2);
+      console.log(str+"]");
+
+      console.log("changeGalaxy"+ changeGalaxy);
       return;
     }
     if (event.altKey)
