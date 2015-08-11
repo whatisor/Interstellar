@@ -1,6 +1,7 @@
 //Debug tool
 var EYES;
 var KEYS = [];
+var KEYSQUA = [];
 var QUADS = [];
 function Player()
 {
@@ -12,10 +13,16 @@ function Player()
   this.eyeAngularVelocity = new THREE.Vector3;
 
   this.object.add(this.eyes);
-  EYES = this.object;
+  EYES = this.eyes;
+  OBJ = this.object;
   this.galaxy = 0;
 
   this.controls = [];
+
+
+   this.path = [];
+    this.pathOri = [];
+    this.eyesOri =[];
 }
 Player.prototype = {
 
@@ -100,10 +107,10 @@ Player.prototype = {
           console.log("GALAXY "+this.galaxy);
           console.log(KEYS.length);
           changeGalaxy = KEYS.length;
-           console.log("["+EYES.position.x +", "+EYES.position.y +", "+EYES.position.z+"],");
-          console.log("["+EYES.quaternion.w+","+EYES.quaternion.x +", "+EYES.quaternion.y +", "+EYES.quaternion.z+"],");
-          KEYS.push([EYES.position.x,EYES.position.y,EYES.position.z]);
-          QUADS.push([EYES.quaternion.w,EYES.quaternion.x,EYES.quaternion.y,EYES.quaternion.z]);
+           console.log("["+OBJ.position.x +", "+OBJ.position.y +", "+OBJ.position.z+"],");
+          console.log("["+EYES.quaternion.x+","+EYES.quaternion.y +", "+EYES.quaternion.z +", "+EYES.quaternion.w+"],");
+          KEYS.push([OBJ.position.x,OBJ.position.y,OBJ.position.z]);
+           KEYSQUA.push([OBJ.quaternion.x,OBJ.quaternion.y,OBJ.quaternion.z,OBJ.quaternion.w]);
 
         }
       }
@@ -112,18 +119,27 @@ Player.prototype = {
      
       //if exist path, run along path
       if(this.path){
-        if(this.timer >= this.path.length-1)this.timer = 0;
+        if(this.timer >= this.path.length-1){
+          this.galaxy=0;
+          this.timer = 0;
+          console.log("GALAXY "+this.galaxy);
+        }
         var point = this.path[this.timer++];
-        this.eyes.position.copy(point);
-        this.eyes.lookAt(this.path[this.timer]);
-        //this.eyes.quaternion.copy(this.pathOri[Math.floor(this.timer/this.pathOri.length*this.steps)]);
-        console.log(this.eyes.position.distanceTo(positions[changeGalaxy]));
-        if(this.eyes.position.distanceTo(positions[changeGalaxy])<1 && this.galaxy===0){
+        this.object.position.copy(point);
+        this.object.quaternion.copy(this.pathOri[this.timer-1]);
+        this.eyes.quaternion.copy(this.eyesOri[this.timer-1]);
+
+        //this.eyes.lookAt(this.path[this.timer]);
+        //console.log(this.object.position.distanceTo(positions[changeGalaxy]));
+        if((this.timer===this.smooth*changeGalaxy) && this.galaxy===0){
           this.galaxy = 1 - this.galaxy;
+          console.log("GALAXY "+this.galaxy);
         }
       }
       else {
          this.eyes.quaternion.multiply( rotation );
+         if(KEYS.length > QUADS.length)          
+          QUADS.push([EYES.quaternion.x,EYES.quaternion.y,EYES.quaternion.z,EYES.quaternion.w]);
       }
     };
   })(),
@@ -137,22 +153,41 @@ Player.prototype = {
     this.object.updateMatrixWorld(true);
   },
   //make path
-  makePath: function(points,orientations,desiredNumber){
+  makePathSelf: function(points,positionsOri,orientations,desiredNumber){
     desiredNumber = this.smooth;
     var spline = new THREE.Spline( points );
-    var path = [];
+   
 
     for ( i = 0; i < points.length * desiredNumber; i ++ ) {
           
           index = i / ( points.length * desiredNumber );
           var position = spline.getPoint( index );
-          path.push(new THREE.Vector3( position.x, position.y, position.z ));
+          this.path.push(new THREE.Vector3( position.x, position.y, position.z ));
+          var indexq = Math.floor(i/desiredNumber);
+          //if(indexq<orientations.length-1){
+          var rate = (i%desiredNumber)/desiredNumber;
+          var q = new THREE.Quaternion();
+          THREE.Quaternion.slerp(orientations[indexq],orientations[(indexq<orientations.length-1)?indexq+1:indexq],q,rate)
+          this.eyesOri.push(q);
+           var q2 = new THREE.Quaternion();
+          THREE.Quaternion.slerp(positionsOri[indexq],positionsOri[(indexq<orientations.length-1)?indexq+1:indexq],q2,rate)
+          this.pathOri.push(q2);
+        //}
         }
     //this.pathLine = this.makeLineMesh(path,0xff0000);
-    this.path = path;
-    this.pathOri = orientations;
-    this.steps = points.length;
+  
+   // this.steps = points.length;
     this.timer = 0;
+  },
+  makePath:function(points,positionsOri,orientations,desiredNumber){
+    var points1 = points.slice(0,changeGalaxy);
+    var points2 = points.slice(changeGalaxy,points.length);
+    var posOri1 = positionsOri.slice(0,changeGalaxy);
+    var posOri2 = positionsOri.slice(changeGalaxy,positionsOri.length);
+    var ori1 = orientations.slice(0,changeGalaxy);
+    var ori2 = orientations.slice(changeGalaxy,orientations.length);
+    this.makePathSelf(points1,posOri1,ori1,desiredNumber)
+    this.makePathSelf(points2,posOri2,ori2,desiredNumber)
   },
   ///for visualine
   makeLineMesh:function(lines,colorin){

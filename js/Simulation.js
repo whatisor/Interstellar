@@ -227,10 +227,10 @@ var Simulation = {
 
     this.player = new Player;
     this.player.lookAt(this.wormholePositionSize);
-    this.player.smooth = 400;
-    this.player.makePath(positions,qua);
+    this.player.smooth = 100;
+    this.player.makePath(positions,positionsOri,orientations);
     //visualize path
-    //this.quadScene.add(this.player.pathLine);
+    this.quadScene.add(this.player.pathLine);
     // Add keyboard controls to the player
     this.keyboardControls = new KeyboardControls(this.player, this.container);
     this.keyboardControls.movementSpeed = 1;

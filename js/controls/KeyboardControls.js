@@ -38,13 +38,18 @@ function KeyboardControls(player, element)
 
   function keydown(event)
   {
-
+    if(event.keyCode === 67){
+      //manual render
+      Simulation.step();
+    }
     if (event.keyCode === 66)//B:record positions
     {
-      console.log("["+EYES.position.x +", "+EYES.position.y +", "+EYES.position.z+"],");
-      console.log("["+EYES.quaternion.w+","+EYES.quaternion.x +", "+EYES.quaternion.y +", "+EYES.quaternion.z+"],");
-      KEYS.push([EYES.position.x,EYES.position.y,EYES.position.z]);
-       QUADS.push([EYES.quaternion.w,EYES.quaternion.x,EYES.quaternion.y,EYES.quaternion.z]);
+      console.log("["+OBJ.position.x +", "+OBJ.position.y +", "+OBJ.position.z+"],");
+      console.log("["+EYES.quaternion.x+","+EYES.quaternion.y +", "+EYES.quaternion.z+", "+EYES.quaternion.w+"],");
+      KEYS.push([OBJ.position.x,OBJ.position.y,OBJ.position.z]);
+       QUADS.push([EYES.quaternion.x,EYES.quaternion.y,EYES.quaternion.z,EYES.quaternion.w]);
+
+           KEYSQUA.push([OBJ.quaternion.x,OBJ.quaternion.y,OBJ.quaternion.z,OBJ.quaternion.w]);
       return;
     }
     if (event.keyCode === 13)//save positions
@@ -57,6 +62,13 @@ function KeyboardControls(player, element)
       var str="";
       KEYS.forEach(function(key){
         str +="["+key[0]+", "+key[1]+", "+key[2]+"],";
+      })
+      console.log(str);
+      //posqua
+      console.log("Quad:");
+      str="";
+      KEYSQUA.forEach(function(key){
+        str +="["+key[0]+", "+key[1]+", "+key[2]+", "+key[3]+"],";
       })
       console.log(str);
       //quad
