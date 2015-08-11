@@ -227,13 +227,13 @@ var Simulation = {
 
     this.player = new Player;
     this.player.lookAt(this.wormholePositionSize);
-    this.player.smooth = 100;
+    this.player.smooth = 200;
     if((window.location.href.indexOf("auto")>0))this.player.makePath(positions,positionsOri,orientations);
     //visualize path
     //this.quadScene.add(this.player.pathLine);
     // Add keyboard controls to the player
     this.keyboardControls = new KeyboardControls(this.player, this.container);
-    this.keyboardControls.movementSpeed = 1;
+    this.keyboardControls.movementSpeed = 0.5;
     this.keyboardControls.rollSpeed = Math.PI / 3;
     this.keyboardControls.autoForward = false;
     this.keyboardControls.dragToLook = true;

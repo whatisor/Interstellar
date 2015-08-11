@@ -151,7 +151,7 @@ Player.prototype = {
 
         //this.eyes.lookAt(this.path[this.timer]);
         //console.log(this.object.position.distanceTo(positions[changeGalaxy]));
-        if((this.timer===this.smooth*changeGalaxy) && this.galaxy===0){
+        if((this.timer===this.smooth*changeGalaxy+1) && this.galaxy===0){
           this.galaxy = 1 - this.galaxy;
           console.log("GALAXY "+this.galaxy);
         }
@@ -207,6 +207,16 @@ Player.prototype = {
     var ori1 = orientations.slice(0,changeGalaxy);
     var ori2 = orientations.slice(changeGalaxy,orientations.length);
     this.makePathSelf(points1,posOri1,ori1,desiredNumber)
+    // for(var i = 0; i < 3;i++)//smooth
+    // {
+          
+    //       var rate = i/3;
+    //       var tmp =points1[points1.length-1].clone();
+    //       tmp.lerp(points2[0],rate);
+    //       this.path.push(tmp);
+    //       this.eyesOri.push(ori1[ori1.length-1]);
+    //       this.pathOri.push(posOri1[posOri1.length-1]);
+    // }
     this.makePathSelf(points2,posOri2,ori2,desiredNumber)
   },
   ///for visualine

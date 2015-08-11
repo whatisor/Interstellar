@@ -47,43 +47,43 @@ function KeyboardControls(player, element)
       console.log("["+OBJ.position.x +", "+OBJ.position.y +", "+OBJ.position.z+"],");
       console.log("["+EYES.quaternion.x+","+EYES.quaternion.y +", "+EYES.quaternion.z+", "+EYES.quaternion.w+"],");
       KEYS.push([OBJ.position.x,OBJ.position.y,OBJ.position.z]);
-       QUADS.push([EYES.quaternion.x,EYES.quaternion.y,EYES.quaternion.z,EYES.quaternion.w]);
+      QUADS.push([EYES.quaternion.x,EYES.quaternion.y,EYES.quaternion.z,EYES.quaternion.w]);
 
-           KEYSQUA.push([OBJ.quaternion.x,OBJ.quaternion.y,OBJ.quaternion.z,OBJ.quaternion.w]);
+      KEYSQUA.push([OBJ.quaternion.x,OBJ.quaternion.y,OBJ.quaternion.z,OBJ.quaternion.w]);
       return;
     }
     if (event.keyCode === 13)//save positions
     {
-      
+
       //KEYS.push([EYES.position.x,EYES.position.y,EYES.position.z]);
       //write all
-      console.log("write all:");
-      console.log("Pos:");
-      var str="[";
+      console.log("data.js:\n\n\n");
+      var str="pos = [";
       KEYS.forEach(function(key){
         str +="["+key[0]+", "+key[1]+", "+key[2]+"],"+"\n";
       })
       str = str.substring(0, str.length - 2);
-      console.log(str+"]");
+      str+="]\n\n";
       //posqua
-      console.log("PosQua:");
-      str="[";
+      str+="posqua = ";
+      str+="[";
       KEYSQUA.forEach(function(key){
         str +="["+key[0]+", "+key[1]+", "+key[2]+", "+key[3]+"],"+"\n";
       })
       str = str.substring(0, str.length - 2);
-      console.log(str+"]");
+      str+="]\n\n";
       //quad
 
-      console.log("Qua:");
-      str="[";
+      str += "qua = ";
+      str += "[";
       QUADS.forEach(function(key){
         str +="["+key[0]+", "+key[1]+", "+key[2]+", "+key[3]+"],"+"\n";
       })
       str = str.substring(0, str.length - 2);
-      console.log(str+"]");
+      str += "]\n\n";
 
-      console.log("changeGalaxy"+ changeGalaxy);
+      str += "changeGalaxy = "+ changeGalaxy;
+      console.log(str+"\n\n");
       return;
     }
     if (event.altKey)
@@ -94,56 +94,56 @@ function KeyboardControls(player, element)
     switch (event.keyCode)
     {
       case 16: // Shift
-        self.movementSpeedMultiplier = 10;
-        break;
+      self.movementSpeedMultiplier = 30;
+      break;
 
       case 87: // W
-        self.moveState.forward = 1;
-        break;
+      self.moveState.forward = 1;
+      break;
 
       case 83: // S
-        self.moveState.back = 1;
-        break;
+      self.moveState.back = 1;
+      break;
 
       case 65: // A
-        self.moveState.left = 1;
-        break;
+      self.moveState.left = 1;
+      break;
 
       case 68: // D
-        self.moveState.right = 1;
-        break;
+      self.moveState.right = 1;
+      break;
 
       case 82: // R
-        self.moveState.up = 1;
-        break;
+      self.moveState.up = 1;
+      break;
 
       case 70: // F
-        self.moveState.down = 1;
-        break;
+      self.moveState.down = 1;
+      break;
 
       case 38: // Up
-        self.moveState.pitchUp = 1;
-        break;
+      self.moveState.pitchUp = 1;
+      break;
 
       case 40: // Down
-        self.moveState.pitchDown = 1;
-        break;
+      self.moveState.pitchDown = 1;
+      break;
 
       case 37: // Left
-        self.moveState.yawLeft = 1;
-        break;
+      self.moveState.yawLeft = 1;
+      break;
 
       case 39: // Right
-        self.moveState.yawRight = 1;
-        break;
+      self.moveState.yawRight = 1;
+      break;
 
       case 81: // Q
-        self.moveState.rollLeft = 1;
-        break;
+      self.moveState.rollLeft = 1;
+      break;
 
       case 69: // E
-        self.moveState.rollRight = 1;
-        break;
+      self.moveState.rollRight = 1;
+      break;
     }
 
     updateMovementVector();
@@ -156,56 +156,56 @@ function KeyboardControls(player, element)
     switch (event.keyCode)
     {
       case 16: // Shift
-        self.movementSpeedMultiplier = 1;
-        break;
+      self.movementSpeedMultiplier = 1;
+      break;
 
       case 87: // W
-        self.moveState.forward = 0;
-        break;
+      self.moveState.forward = 0;
+      break;
 
       case 83: // S
-        self.moveState.back = 0;
-        break;
+      self.moveState.back = 0;
+      break;
 
       case 65: // A
-        self.moveState.left = 0;
-        break;
+      self.moveState.left = 0;
+      break;
 
       case 68: // D
-        self.moveState.right = 0;
-        break;
+      self.moveState.right = 0;
+      break;
 
       case 82: // R
-        self.moveState.up = 0;
-        break;
+      self.moveState.up = 0;
+      break;
 
       case 70: // F
-        self.moveState.down = 0;
-        break;
+      self.moveState.down = 0;
+      break;
 
       case 38: // Up
-        self.moveState.pitchUp = 0;
-        break;
+      self.moveState.pitchUp = 0;
+      break;
 
       case 40: // Down
-        self.moveState.pitchDown = 0;
-        break;
+      self.moveState.pitchDown = 0;
+      break;
 
       case 37: // Left
-        self.moveState.yawLeft = 0;
-        break;
+      self.moveState.yawLeft = 0;
+      break;
 
       case 39: // Right
-        self.moveState.yawRight = 0;
-        break;
+      self.moveState.yawRight = 0;
+      break;
 
       case 81: // Q
-        self.moveState.rollLeft = 0;
-        break;
+      self.moveState.rollLeft = 0;
+      break;
 
       case 69: // E
-        self.moveState.rollRight = 0;
-        break;
+      self.moveState.rollRight = 0;
+      break;
     }
 
     updateMovementVector();
@@ -231,12 +231,12 @@ function KeyboardControls(player, element)
       switch (event.button)
       {
         case 0:
-          self.moveState.forward = 1;
-          break;
+        self.moveState.forward = 1;
+        break;
 
         case 2:
-          self.moveState.back = 1;
-          break;
+        self.moveState.back = 1;
+        break;
       }
 
       updateMovementVector();
@@ -275,12 +275,12 @@ function KeyboardControls(player, element)
       switch (event.button)
       {
         case 0:
-          self.moveState.forward = 0;
-          break;
+        self.moveState.forward = 0;
+        break;
 
         case 2:
-          self.moveState.back = 0;
-          break;
+        self.moveState.back = 0;
+        break;
       }
 
       updateMovementVector();
