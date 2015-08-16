@@ -8,7 +8,7 @@ function Player()
 
   this.object.add(this.eyes);
 
-  this.galaxy = 0;
+  this.galaxy = 1;
 
   this.controls = [];
 }
